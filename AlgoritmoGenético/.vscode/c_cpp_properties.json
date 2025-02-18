@@ -1,18 +1,23 @@
 {
   "configurations": [
-    {
-      "name": "macos-clang-arm64",
-      "includePath": [
-        "${workspaceFolder}/**"
-      ],
-      "compilerPath": "/usr/bin/clang",
-      "cStandard": "${default}",
-      "cppStandard": "${default}",
-      "intelliSenseMode": "macos-clang-arm64",
-      "compilerArgs": [
-        ""
-      ]
-    }
+      {
+          "name": "Mac",
+          "includePath": [
+              "/Users/stephanye/Documents/PO/AlgoritmoGenético/"      // Adiciona o diretório do seu projeto
+
+          ],
+          "defines": [],
+          "compilerPath": "/usr/bin/gcc",   // Ou o caminho do seu compilador
+          "cStandard": "c11",
+          "cppStandard": "c++17",
+          "intelliSenseMode": "macos-gcc-x64",
+          "browse": {
+              "path": [
+                  "${workspaceFolder}/**"
+              ],
+              "limitSymbolsToIncludedHeaders": true
+          }
+      }
   ],
   "version": 4
 }
