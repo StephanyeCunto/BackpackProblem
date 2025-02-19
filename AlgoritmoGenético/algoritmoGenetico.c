@@ -4,12 +4,12 @@
 #include <string.h>
 #include <float.h>
 
-#define NUM_ITENS 26
-#define TAM_POPULACAO 100
-#define NUM_GERACOES 100
-#define TAXA_MUTACAO 0.15
-#define TAXA_ELITISMO 0.1
-#define CAPACIDADE 10
+#define NUM_ITENS 50
+#define TAM_POPULACAO 300
+#define NUM_GERACOES 300
+#define TAXA_MUTACAO 0.1
+#define TAXA_ELITISMO 0.3
+#define CAPACIDADE 20
 #define TAMANHO_TORNEIO 3
 
 typedef struct
@@ -127,21 +127,31 @@ int calcular_fitness(Individuo *ind)
     return valor_total;
 }
 
-void criar_individuo(Individuo *individuo) {
+void criar_individuo(Individuo *individuo)
+{
     int peso_atual = 0;
-    for (int j = 0; j < NUM_ITENS; j++) {
-        if (peso_atual + itens[j].peso < CAPACIDADE) {
+    for (int j = 0; j < NUM_ITENS; j++)
+    {
+        if (peso_atual + itens[j].peso < CAPACIDADE)
+        {
             individuo->cromossomo[j] = rand() % 2;
-            peso_atual += itens[j].peso;
-        } else {
+            if (individuo->cromossomo[j])
+            {
+                peso_atual += itens[j].peso;
+            }
+        }
+        else
+        {
             individuo->cromossomo[j] = 0;
         }
     }
     individuo->fitness = calcular_fitness(individuo);
 }
 
-void inicializar_populacao(Populacao *pop) {
-    for (int i = 0; i < pop->tamanho; i++) {
+void inicializar_populacao(Populacao *pop)
+{
+    for (int i = 0; i < pop->tamanho; i++)
+    {
         criar_individuo(&pop->individuos[i]);
     }
     atualizar_estatisticas_populacao(pop);
@@ -199,7 +209,7 @@ void mutacao(Individuo *ind)
 
 void atualizar_estatisticas_populacao(Populacao *pop)
 {
-    int soma_fitness = 0;
+    float soma_fitness = 0;
     pop->melhor_fitness = 0;
 
     for (int i = 0; i < pop->tamanho; i++)
@@ -210,7 +220,6 @@ void atualizar_estatisticas_populacao(Populacao *pop)
             pop->melhor_fitness = pop->individuos[i].fitness;
         }
     }
-
     pop->fitness_medio = (float)soma_fitness / pop->tamanho;
 }
 
@@ -295,13 +304,13 @@ void algoritmo_genetico(void)
 
         atualizar_estatisticas_populacao(pop_nova);
 
-
-        if (gen % 10 == 0)
+        if (gen % 10 == 0 && gen != 0)
         {
+
             printf("| %-8d | %14d | %14.2f |\n",
                    gen, pop_nova->melhor_fitness, pop_nova->fitness_medio);
         }
-           
+
         Populacao *temp = pop_atual;
         pop_atual = pop_nova;
         pop_nova = temp;
