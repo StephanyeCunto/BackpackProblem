@@ -116,11 +116,11 @@ int calcular_fitness(Solucao *s) {
         }
     }
 
-    s->peso_total = peso_total;
-
     if (peso_total > CAPACIDADE) {
         return 0;
     }
+
+    s->peso_total = peso_total;
 
     return valor_total;
 }
@@ -137,6 +137,7 @@ void gerar_solucao_inicial(Solucao *s) {
             s->solucao[i] = 0;
         }
     }
+    s->peso_total = peso_atual;
     s->fitness = calcular_fitness(s);
 }
 
@@ -145,7 +146,15 @@ void gerar_vizinho(Solucao *atual, Solucao *vizinho) {
     
     int pos1 = rand() % NUM_ITENS;
     int pos2 = rand() % NUM_ITENS;
-    
+
+    while(atual->peso_total + itens[pos1].peso - itens[pos2].peso > CAPACIDADE) {
+       pos1 = rand() % NUM_ITENS;
+       pos2 = rand() % NUM_ITENS;
+        while (pos1 == pos2) {
+              pos2 = rand() % NUM_ITENS;
+         }
+    }
+
     vizinho->solucao[pos1] = !vizinho->solucao[pos1];
     vizinho->solucao[pos2] = !vizinho->solucao[pos2];
     
@@ -174,11 +183,13 @@ void busca_tabu(void) {
     Solucao *melhor_global = criar_solucao();
     Solucao *atual = criar_solucao();
     Solucao *melhor_vizinho = criar_solucao();
+    
     lista_tabu = criar_lista_tabu(TABU_SIZE);
 
     gerar_solucao_inicial(atual);
     memcpy(melhor_global->solucao, atual->solucao, NUM_ITENS * sizeof(int));
     melhor_global->fitness = atual->fitness;
+    melhor_global->peso_total = atual->peso_total;
 
     int iteracoes_sem_melhora = 0;
     
