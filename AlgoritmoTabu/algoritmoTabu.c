@@ -105,7 +105,6 @@ void imprimir_itens(void) {
     printf("+-----------+--------+--------+\n");
 }
 
-
 int calcular_fitness(Solucao *s) {
     int peso_total = 0, valor_total = 0;
 
@@ -147,18 +146,31 @@ void gerar_vizinho(Solucao *atual, Solucao *vizinho) {
     int pos1 = rand() % NUM_ITENS;
     int pos2 = rand() % NUM_ITENS;
 
-    while(atual->peso_total + itens[pos1].peso - itens[pos2].peso > CAPACIDADE) {
-       pos1 = rand() % NUM_ITENS;
-       pos2 = rand() % NUM_ITENS;
-        while (pos1 == pos2) {
-              pos2 = rand() % NUM_ITENS;
-         }
+    while (pos1 == pos2) {
+        pos2 = rand() % NUM_ITENS;
     }
 
-    vizinho->solucao[pos1] = !vizinho->solucao[pos1];
-    vizinho->solucao[pos2] = !vizinho->solucao[pos2];
-    
-    vizinho->fitness = calcular_fitness(vizinho);
+    int novo_peso = atual->peso_total;
+    if (vizinho->solucao[pos1]) {
+        novo_peso -= itens[pos1].peso;
+    } else {
+        novo_peso += itens[pos1].peso;
+    }
+    if (vizinho->solucao[pos2]) {
+        novo_peso -= itens[pos2].peso;
+    } else {
+        novo_peso += itens[pos2].peso;
+    }
+
+    if (novo_peso <= CAPACIDADE) {
+        vizinho->solucao[pos1] = !vizinho->solucao[pos1];
+        vizinho->solucao[pos2] = !vizinho->solucao[pos2];
+        vizinho->peso_total = novo_peso;
+        vizinho->fitness = calcular_fitness(vizinho);
+    } else {
+        vizinho->fitness = atual->fitness;
+        vizinho->peso_total = atual->peso_total;
+    }
 }
 
 bool esta_na_lista_tabu(ListaTabu *lt, int *solucao) {
