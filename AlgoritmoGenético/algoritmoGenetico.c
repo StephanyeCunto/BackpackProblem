@@ -24,7 +24,6 @@ typedef struct
     int *cromossomo;
     int fitness;
     int peso_total;
-    float razao_fitness;
 } Individuo;
 
 typedef struct
@@ -165,7 +164,7 @@ Individuo *selecao_torneio(Populacao *pop)
     for (int i = 1; i < TAMANHO_TORNEIO; i++)
     {
         int idx = rand() % pop->tamanho;
-        if (pop->individuos[idx].fitness > melhor_fitness)
+        if (pop->individuos[idx].fitness > melhor_fitness && pop->individuos[idx].peso_total <= CAPACIDADE)
         {
             melhor_idx = idx;
             melhor_fitness = pop->individuos[idx].fitness;

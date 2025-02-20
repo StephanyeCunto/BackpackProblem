@@ -5,9 +5,9 @@
 #include <stdbool.h>
 
 #define NUM_ITENS 50
-#define TABU_SIZE 20
+#define TABU_SIZE 200
 #define MAX_ITERATIONS 1000
-#define VIZINHOS_SIZE 20
+#define VIZINHOS_SIZE 200
 #define CAPACIDADE 20
 
 typedef struct {
@@ -144,11 +144,11 @@ void gerar_vizinho(Solucao *atual, Solucao *vizinho) {
     memcpy(vizinho->solucao, atual->solucao, NUM_ITENS * sizeof(int));
     
     int pos1 = rand() % NUM_ITENS;
-    int pos2 = rand() % NUM_ITENS;
+    int pos2;
 
-    while (pos1 == pos2) {
+    do {
         pos2 = rand() % NUM_ITENS;
-    }
+    } while (pos1 == pos2);
 
     int novo_peso = atual->peso_total;
     if (vizinho->solucao[pos1]) {

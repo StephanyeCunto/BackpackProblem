@@ -55,7 +55,6 @@ O Problema da Mochila consiste em selecionar itens com diferentes pesos e valore
 
 ### Pré-requisitos
 - GCC
-- Make
 
 ### Compilando
 ```bash

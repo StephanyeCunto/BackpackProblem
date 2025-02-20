@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/stephanye/Documents/PO/AlgoritmoTabu",
-      "program": "/Users/stephanye/Documents/PO/AlgoritmoTabu/build/Debug/outDebug"
+      "cwd": "/Users/stephanye/Documents/PO/AlgoritmoGenético",
+      "program": "/Users/stephanye/Documents/PO/AlgoritmoGenético/build/Debug/outDebug"
     }
   ]
 }
