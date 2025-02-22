@@ -1,6 +1,6 @@
 # Busca Tabu para o Problema da Mochila
 
-Uma implementação sofisticada do algoritmo de Busca Tabu para resolver o Problema da Mochila 0-1 - um desafio clássico de otimização onde itens com diferentes pesos e valores devem ser selecionados para maximizar o valor total, respeitando uma restrição de capacidade de peso.
+Uma implementação do algoritmo de Busca Tabu para resolver o Problema da Mochila 0-1 - um desafio clássico de otimização onde itens com diferentes pesos e valores devem ser selecionados para maximizar o valor total, respeitando uma restrição de capacidade de peso.
 
 ## Visão Geral
 
