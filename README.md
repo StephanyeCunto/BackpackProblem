@@ -144,14 +144,6 @@ Ambas as implementações fornecem saída detalhada em três etapas:
 └── README.md
 ```
 
-## Como Contribuir
-
-1. Faça um fork do repositório
-2. Crie sua branch de feature (`git checkout -b feature/RecursoIncrivel`)
-3. Faça commit das suas alterações (`git commit -m 'Adiciona algum RecursoIncrivel'`)
-4. Faça push para a branch (`git push origin feature/RecursoIncrivel`)
-5. Abra um Pull Request
-
 ## Licença
 
 Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
