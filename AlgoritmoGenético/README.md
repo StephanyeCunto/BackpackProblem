@@ -1,8 +1,16 @@
 # Algoritmo Genético para o Problema da Mochila
 
-Este projeto implementa um Algoritmo Genético (AG) para resolver o Problema da Mochila - um problema clássico de otimização onde precisamos selecionar itens com diferentes pesos e valores para maximizar o valor total, respeitando uma restrição de capacidade de peso.
+Esta implementação utiliza um Algoritmo Genético (AG) para resolver o Problema da Mochila 0/1, um problema clássico de otimização combinatória. O objetivo é selecionar um conjunto de itens com diferentes pesos e valores para maximizar o valor total, respeitando uma restrição de capacidade.
 
-## Estrutura do Projeto
+## Sobre o Algoritmo Genético
+
+O AG implementado utiliza uma abordagem evolutiva onde:
+- Cada solução é representada como um cromossomo binário
+- A população evolui através de operadores genéticos
+- O fitness é calculado considerando o valor total e a viabilidade do peso
+- Técnicas de elitismo garantem a preservação das melhores soluções
+
+## Diagrama de Classes
 
 ```mermaid
 classDiagram
@@ -15,7 +23,6 @@ classDiagram
         +int *cromossomo
         +int fitness
         +int peso_total
-        +float razao_fitness
     }
     class Populacao {
         +Individuo[] individuos
@@ -38,114 +45,137 @@ classDiagram
         +imprimir_estatisticas(geracao: int, pop: Populacao): void
         +imprimir_solucao(ind: Individuo): void
         +algoritmo_genetico(): void
-        +imprimir_cabecario(): void
-        +imprimir_rodape(): void
-        +inicializar_itens(): void
-        +imprimir_itens(): void
     }
     AlgoritmoGenetico --|> Item : interage com
     AlgoritmoGenetico --|> Populacao : gerencia
     AlgoritmoGenetico --|> Individuo : manipula
 ```
 
-## Funcionalidades
+## Características da Implementação
 
-- Implementação dos componentes principais do Algoritmo Genético:
-  - Seleção por Torneio
-  - Crossover Uniforme
-  - Mutação
-  - Elitismo
-- Geração aleatória de itens com parâmetros configuráveis
-- Acompanhamento de progresso e estatísticas
-- Saída formatada dos resultados
-- Gerenciamento de memória para populações dinâmicas
+### Estruturas de Dados
+1. **Item**
+   - `peso`: Peso do item (inteiro)
+   - `valor`: Valor do item (inteiro)
+   - `nome`: Identificador do item (string)
 
-## Parâmetros de Configuração
+2. **Indivíduo**
+   - `cromossomo`: Array binário representando seleção de itens
+   - `fitness`: Valor da função objetivo
+   - `peso_total`: Soma dos pesos dos itens selecionados
+3. **População**
+   - `individuos`: Array de soluções candidatas
+   - `tamanho`: Número de indivíduos
+   - `melhor_fitness`: Melhor valor encontrado
+   - `fitness_medio`: Média de fitness da população
 
-Os seguintes parâmetros podem ser ajustados no código:
+### Operadores Genéticos
+
+1. **Seleção por Torneio**
+   ```c
+   Individuo *selecao_torneio(Populacao *pop)
+   ```
+   - Seleciona k indivíduos aleatoriamente
+   - Retorna o melhor entre os selecionados
+   - Tamanho do torneio configurável (TAMANHO_TORNEIO)
+
+2. **Crossover Uniforme**
+   ```c
+   void crossover_uniforme(Individuo *pai1, Individuo *pai2, 
+                          Individuo *filho1, Individuo *filho2)
+   ```
+   - Combina genes dos pais com probabilidade igual
+   - Gera dois filhos por operação
+   - Mantém diversidade genética
+
+3. **Mutação**
+   ```c
+   void mutacao(Individuo *ind)
+   ```
+   - Inverte bits aleatoriamente
+   - Taxa controlada por TAXA_MUTACAO
+   - Explora novas regiões do espaço de busca
+
+4. **Elitismo**
+   ```c
+   void preservar_elitismo(Populacao *antiga, Populacao *nova)
+   ```
+   - Preserva melhores indivíduos entre gerações
+   - Percentual definido por TAXA_ELITISMO
+   - Garante não-degradação da melhor solução
+
+## Parâmetros Configuráveis
 
 ```c
-#define NUM_ITENS 26           // Número de itens disponíveis
-#define TAM_POPULACAO 100      // Tamanho da população
-#define NUM_GERACOES 100       // Número de gerações
-#define TAXA_MUTACAO 0.15      // Taxa de mutação
-#define TAXA_ELITISMO 0.1      // Taxa de elitismo
-#define CAPACIDADE 10          // Capacidade da mochila
-#define TAMANHO_TORNEIO 3      // Tamanho do torneio para seleção
+// Parâmetros do Problema
+#define NUM_ITENS 50           // Quantidade de itens disponíveis
+#define CAPACIDADE 20          // Capacidade máxima da mochila
+
+// Parâmetros do AG
+#define TAM_POPULACAO 300      // Tamanho da população
+#define NUM_GERACOES 300       // Número de gerações
+#define TAXA_MUTACAO 0.1      // Probabilidade de mutação
+#define TAXA_ELITISMO 0.3      // Proporção de elite preservada
+#define TAMANHO_TORNEIO 3      // Número de indivíduos por torneio
 ```
 
 ## Compilação e Execução
 
-### Pré-requisitos
-- Compilador GCC
-- Make (opcional)
-
-### Como compilar
+### Compilando
 ```bash
-gcc -o mochila main.c
+# Usando GCC diretamente
+gcc -o mochila_ag main.c -Wall -O2
 ```
 
-### Como executar
+### Executando
 ```bash
-./mochila
+./mochila_ag
 ```
 
 ## Formato da Saída
 
-O programa gera:
-1. Lista inicial de itens com pesos e valores
-2. Progresso geração por geração
-3. Solução final incluindo:
-   - Itens selecionados
-   - Peso total
-   - Valor total
-   - Fitness da solução
-
-Exemplo de saída:
+### 1. Lista de Itens
 ```
 +-----------+--------+--------+
 | Item      | Peso   | Valor  |
 +-----------+--------+--------+
 | Item 1    |      5 |     12 |
+| Item 2    |      3 |      8 |
 ...
++-----------+--------+--------+
+```
 
+### 2. Progresso da Evolução
+```
 +---------------------------------------------+
 | Geracao  | Melhor Fitness | Fitness Medio   |
 +---------------------------------------------+
+|      10  |           145  |         122.5   |
+|      20  |           167  |         134.8   |
 ...
++---------------------------------------------+
 ```
 
-## Detalhes da Implementação
+### 3. Solução Final
+```
+Melhor solucao encontrada:
+Cromossomo: 1 0 1 0 1 ...
+Fitness: 167
+Peso Total: 19
 
-### Componentes Principais
+Itens selecionados:
++-----------+--------+--------+
+| Item      | Peso   | Valor  |
++-----------+--------+--------+
+| Item 1    |      5 |     12 |
+...
++-----------+--------+--------+
+```
 
-1. **Estrutura Item**
-   - Representa itens individuais com peso, valor e nome
+## Gerenciamento de Memória
 
-2. **Estrutura Indivíduo**
-   - Representa uma possível solução
-   - Contém cromossomo (seleção binária de itens)
-   - Controla fitness e peso total
-
-3. **Estrutura População**
-   - Gerencia coleção de indivíduos
-   - Controla melhor fitness e fitness médio
-
-### Operações Genéticas
-
-1. **Seleção**
-   - Seleção por torneio com tamanho configurável
-   - Seleciona pais para crossover
-
-2. **Crossover**
-   - Crossover uniforme entre soluções pais
-   - Cria novas soluções filhas
-
-3. **Mutação**
-   - Mutação por inversão de bits aleatória
-   - Mantém diversidade da população
-
-4. **Elitismo**
-   - Preserva melhores soluções entre gerações
-   - Taxa de elitismo configurável
-
+A implementação inclui:
+- Alocação dinâmica de populações
+- Liberação apropriada de recursos
+- Verificações de alocação
+- Prevenção de vazamentos de memória

@@ -5,9 +5,9 @@
 #include <stdbool.h>
 
 #define NUM_ITENS 50
-#define TABU_SIZE 200
+#define TABU_SIZE 20
 #define MAX_ITERATIONS 1000
-#define VIZINHOS_SIZE 200
+#define VIZINHOS_SIZE 100
 #define CAPACIDADE 20
 
 typedef struct {
